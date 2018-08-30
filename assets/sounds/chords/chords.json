@@ -1,0 +1,75 @@
+{
+    "chords": [{
+        "name": "C",
+        "filename": "C"
+    },
+    {
+        "name": "Am",
+        "filename": "Am"
+    },
+    {
+        "name": "Esus",
+        "filename": "Esus"
+    },
+    {
+        "name": "C/G",
+        "filename": "C.G"
+    },
+    {
+        "name": "E/G#",
+        "filename": "E.Gs"
+    },
+    {
+        "name": "Dm/A",
+        "filename": "Dm.A"
+    },
+    {
+        "name": "C/A",
+        "filename": "C.A"
+    },
+    {
+        "name": "B/A",
+        "filename": "B.A"
+    }],
+
+    "modulated": [{
+        "name": "Dm",
+        "root": "Am",
+        "semitones": "-7"
+    },
+    {
+        "name": "Em",
+        "root": "Am",
+        "semitones": "-5"
+    },
+    {
+        "name": "D",
+        "root": "C",
+        "semitones": "2"
+    },
+    {
+        "name": "A",
+        "root": "C",
+        "semitones": "-3"
+    },
+    {
+        "name": "F",
+        "root": "C",
+        "semitones": "-7"
+    },
+    {
+        "name": "G",
+        "root": "C",
+        "semitones": "-5"
+    },
+    {
+        "name": "E",
+        "root": "C",
+        "semitones": "-8"
+    },
+    {
+        "name": "D/A",
+        "root": "C.G",
+        "semitones": "2"
+    }]
+}
