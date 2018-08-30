@@ -107,8 +107,7 @@ function load_files(callback) {
 function setup() {
 
     // setting width and height of our canvas
-    // let po_h = windowHeight;
-    let po_h = 844;
+    let po_h = windowHeight;
     let po_w = (ratio['w']*po_h)/ratio['h']; // width is derived from ratio and po_h
     let cnvs = createCanvas(po_w, po_h).parent('canvas');
 
