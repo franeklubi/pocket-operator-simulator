@@ -1,5 +1,9 @@
 
+let po;
+
 const ratio = {'w': 480, 'h': 844};
+
+let disclaimer_gone = false;
 
 let img;
 let padding_x
@@ -45,8 +49,6 @@ const CHORD_POS = [
     [['Am'], ['C/A'], ['Dm/A'], ['D/A']],
     [['A'],  ['B/A'], ['C'],    ['D']]
 ];
-
-let po;
 
 function load_files(callback) {
 
@@ -179,10 +181,6 @@ function setup() {
     b_slider.style('width', ''+width*0.40);
     b_slider.hide();
 
-    // setting up text
-    textSize(width*0.08);
-    textAlign(CENTER);
-
     // setting up padding for button drawing
     padding_x = width*0.138;
     padding_y = width*0.965;
@@ -206,11 +204,17 @@ function draw() {
         // printing out bpm
         fill(255);
         stroke(0);
+        strokeWeight(1);
         rect(width*0.70, width*0.24, width*0.22, width*0.08);
         bpm = bpm_slider.value();
         fill(0);
         noStroke();
-        text(bpm, width*0.81, width*0.31);
+
+        // setting up text
+        textSize(width*0.08);
+        textAlign(CENTER, BOTTOM);
+        text(bpm, width*0.81, width*0.325);
+
         stroke(0);
         fill(255);
 
@@ -221,7 +225,17 @@ function draw() {
         // corresponding sequencer buttons
         draw_drums_loading();
 
+        // drawing the disclaimer
+        if ( !disclaimer_gone ) {
+            draw_disclaimer();
+        };
+
     } else {
+
+        // setting up text
+        textSize(width*0.08);
+        textAlign(CENTER, TOP);
+        text(bpm, width*0.81, width*0.31);
 
         background(0);
 
@@ -235,6 +249,7 @@ function draw() {
         text('arcade', width*0.30, width*0.50, width*0.40, height*0.20);
 
         stroke(60, 22, 100);
+        strokeWeight(1);
         beginShape();
         vertex(width*0.50, height*0.50);
         for ( let i = 0; i <= files_loaded; i++ ) {
@@ -290,11 +305,20 @@ function mouse_resolver() {
 
 function mouseClicked() {
 
-    if ( loading_completed && drums_loading.length == 0 ) {
+    if ( loading_completed && drums_loading.length == 0 && disclaimer_gone ) {
 
         let mouse_info = mouse_resolver();
         if ( mouse_info != null ) {
             po.pressed(mouse_info[0], mouse_info[1], mouse_info[2]);
+        };
+    };
+
+    if ( !disclaimer_gone ) {
+
+        if ( mouseX > width*0.05 && mouseX < width*0.95 &&
+            mouseY > height*0.7 && mouseY < height*0.8 ) {
+
+            disclaimer_gone = true;
         };
     };
 };
@@ -361,4 +385,42 @@ function load_drumfile(file) {
             drum_file = new loadSound(file, this.success, this.error);
         };
     };
+};
+
+// function for drawing the disclaimer
+function draw_disclaimer() {
+
+    // setting up drawing for window and button
+    stroke(47, 18, 78);
+    strokeWeight(width*0.01);
+    fill(255);
+
+    // drawing the disclaimer window
+    let curve = width*0.1;
+    let curve_top = width*0.05;
+    rect(width*0.05, height*0.3, width*0.9, height*0.5,
+        curve_top, curve_top, curve, curve);
+
+    // drawing confirmation button
+    fill(47, 18, 78);
+    rect(width*0.05, height*0.7, width*0.9, height*0.1,
+        curve, curve, curve, curve);
+
+    // setting up disclaimer text
+    textSize(width*0.045);
+    textAlign(LEFT, TOP);
+    strokeWeight(width*0.001);
+
+    // drawing the disclaimer text
+    text(disclaimer_text,
+        width*0.08, height*0.32, width*0.86, height*0.5);
+
+    // setting up button text
+    textSize(width*0.08);
+    textAlign(CENTER, CENTER);
+    fill(255);
+
+    // drawing the button text
+    text('I UNDERSTAND',
+        width*0.05, height*0.7, width*0.9, height*0.1);
 };

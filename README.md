@@ -1,12 +1,20 @@
 # pocket-operator-simulator #
 
+# Disclaimer!
+* **Please bare in mind that this is not an official teenage engineering product.**
+* **This will not and does not replace the original TE's PO-20**
+* **This is not, at all, perfect 1:1 copy**
+* **It doesn't include every feature of TE's PO-20**
+* **I am not, in any way, affiliated with teenage engineering or Cheap Monday**
+
+
 This is a simulation of the teenage engineering's pocket operator PO-20.
 
 Written just for fun using the p5js library with sound and dom extensions.
 
 For timing, I used [mrchimp's Tock.js](https://github.com/mrchimp/tock) library.
 
-Be free to use this code for any purpose.
+Be free to use this **code** for any purpose.
 
 
 # Neat features #
@@ -22,6 +30,7 @@ Be free to use this code for any purpose.
 ### Not that neat features
 
 * all the effects are gone. Maybe they'll be there in the future but I doubt that
+* the Sounds #0, #8, #9, #10 won't follow root note of currently playing chord
 
 
 # How do I use it? #
