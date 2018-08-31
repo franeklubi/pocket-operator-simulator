@@ -4,6 +4,7 @@ let po;
 const ratio = {'w': 480, 'h': 844};
 
 let disclaimer_gone = false;
+let scaleby = 1;
 
 let img;
 let padding_x
@@ -389,6 +390,7 @@ function load_drumfile(file) {
 
 // function for drawing the disclaimer
 function draw_disclaimer() {
+    let scalar;
 
     // setting up drawing for window and button
     stroke(47, 18, 78);
@@ -410,13 +412,25 @@ function draw_disclaimer() {
     textSize(width*0.045);
     textAlign(LEFT, TOP);
     strokeWeight(width*0.001);
+    fill(47, 18, 78);
 
     // drawing the disclaimer text
     text(disclaimer_text,
         width*0.08, height*0.32, width*0.86, height*0.5);
 
+    if ( mouseX > width*0.05 && mouseX < width*0.95 &&
+        mouseY > height*0.7 && mouseY < height*0.8 ) {
+
+        scalar = 1.2;
+    } else {
+
+        scalar = 1;
+    };
+
+    scaleby = lerp(scaleby, scalar, 0.2);
+
     // setting up button text
-    textSize(width*0.08);
+    textSize((width*0.08)*scaleby);
     textAlign(CENTER, CENTER);
     fill(255);
 
