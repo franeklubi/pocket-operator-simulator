@@ -1,7 +1,7 @@
 # pocket-operator-simulator #
 
 # Disclaimer!
-* **Please bare in mind that this is not an official teenage engineering product.**
+* **Please bear in mind that this is not an official teenage engineering product.**
 * **This will not and does not replace the original TE's PO-20**
 * **This is not, at all, perfect 1:1 copy**
 * **It doesn't include every feature of TE's PO-20**
