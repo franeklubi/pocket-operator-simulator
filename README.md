@@ -28,7 +28,7 @@ Be free to use this **code** for any purpose.
 * it's cool
 * you can use your keyboard to play with it, here's a keymap:
 
-<center>![key_demo](assets/key_demo.png)</center>
+![key_demo](assets/key_demo.png)
 
 ### Not that neat features
 
