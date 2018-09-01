@@ -76,19 +76,19 @@ function PocketOperator(drumkit, chordkit, icons) {
                 this.sound_route(button_num);
 
                 return;
-            }
+            };
 
             if ( this.writing ) {
                 this.writing_route(button_num);
 
                 return;
-            }
+            };
 
             if ( this.chord_picking ) {
                 this.chord_route(button_num, x, y);
 
                 return;
-            }
+            };
 
             // if no special button is pressed, we just play
             // a corresponding drum sample

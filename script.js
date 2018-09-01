@@ -6,6 +6,9 @@ const ratio = {'w': 480, 'h': 844};
 let disclaimer_gone = false;
 let scaleby = 1;
 
+let keymap;
+let keys_active;
+
 let img;
 let padding_x
 let padding_y;
@@ -59,6 +62,9 @@ function load_files(callback) {
     icongrid = loadImage('./assets/icons/icon_grid.png');
     ch_icondata = loadJSON('./assets/icons/chord_grid.json');
     ch_icongrid = loadImage('./assets/icons/chord_grid.png');
+
+    keymap = loadImage("assets/icons/keymap.png");
+    keys_active = false;
 
     img = loadImage("assets/po20.png");
 
@@ -199,7 +205,12 @@ function draw() {
 
         // drawing the button overlay if fx button is pressed
         if ( po.is_fx_active() ) {
-            draw_about_mouse();
+
+            if ( keys_active ) {
+                draw_keymap();
+            } else {
+                draw_about_mouse();
+            }
         };
 
         // printing out bpm
@@ -264,6 +275,15 @@ function draw() {
     };
 };
 
+function draw_keymap() {
+
+    let startx = width*0.09;
+    let starty = width*0.67;
+    let widthee = width*1.02;
+
+    image(keymap, startx, starty, widthee, widthee);
+};
+
 function draw_about_mouse() {
 
     // getting information about what button is mouse
@@ -306,6 +326,8 @@ function mouse_resolver() {
 
 function mouseClicked() {
 
+    keys_active = false;
+
     if ( loading_completed && drums_loading.length == 0 && disclaimer_gone ) {
 
         let mouse_info = mouse_resolver();
@@ -321,6 +343,88 @@ function mouseClicked() {
 
             disclaimer_gone = true;
         };
+    };
+};
+
+function key_resolver(key) {
+
+    switch ( key ) {
+        // drum buttons
+        case '1': return [0, 0, 'drum']; break;
+        case '2': return [1, 0, 'drum']; break;
+        case '3': return [2, 0, 'drum']; break;
+        case '4': return [3, 0, 'drum']; break;
+        case 'q': return [0, 1, 'drum']; break;
+        case 'w': return [1, 1, 'drum']; break;
+        case 'e': return [2, 1, 'drum']; break;
+        case 'r': return [3, 1, 'drum']; break;
+        case 'a': return [0, 2, 'drum']; break;
+        case 's': return [1, 2, 'drum']; break;
+        case 'd': return [2, 2, 'drum']; break;
+        case 'f': return [3, 2, 'drum']; break;
+        case 'z': return [0, 3, 'drum']; break;
+        case 'x': return [1, 3, 'drum']; break;
+        case 'c': return [2, 3, 'drum']; break;
+        case 'v': return [3, 3, 'drum']; break;
+
+        // special buttons
+        case '/': return [0, 0, 'sound']; break;
+        case '*': return [0, 0, 'pattern']; break;
+        case '-': return [0, 0, 'bpm']; break;
+        case '7': return [0, 0, 'knob_A']; break;
+        case '9': return [0, 0, 'knob_B']; break;
+        case '+': return [0, 0, 'chord']; break;
+        case '6': return [0, 0, 'FX']; break;
+        case ' ': return [0, 0, 'play']; break;
+        case 'Enter': return [0, 0, 'write']; break;
+
+        // controlling sliders
+        case 'ArrowUp': slider_control('bpm', 1, 1); break;
+        case 'ArrowDown': slider_control('bpm', -1, 1); break;
+        case 'ArrowLeft': slider_control('a', -1, .1); break;
+        case 'ArrowRight': slider_control('a', 1, .1); break;
+        case ',': slider_control('b', -1, .1); break;
+        case '.': slider_control('b', 1, .1); break;
+    };
+
+    return [0, 0, 'none'];
+};
+
+function slider_control(which, way, amt) {
+
+    switch ( which ) {
+
+        case 'bpm': bpm_slider.value(
+            bpm_slider.value()+amt*way
+        ); break;
+        case 'a': a_slider.value(
+            a_slider.value()+amt*way
+        ); break;
+        case 'b': b_slider.value(
+            b_slider.value()+amt*way
+        ); break;
+    };
+};
+
+function keyPressed() {
+
+    keys_active = true;
+
+    key_info = key_resolver(key);
+
+    if ( key_info[2] == 'none' && key_info != "Enter" ) {
+        console.log('None')
+
+        return;
+    }
+
+    if ( disclaimer_gone ) {
+        po.pressed(key_info[0], key_info[1], key_info[2]);
+    } else {
+        if ( key == "Enter" ) {
+            disclaimer_gone = true;
+        };
+        console.log('disclaimer not gone!');
     };
 };
 
