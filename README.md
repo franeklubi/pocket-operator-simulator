@@ -28,7 +28,7 @@ Be free to use this **code** for any purpose.
 * it's cool
 * you can use your keyboard to play with it, here's a keymap:
 
-<center>![keymap_demo](./assets/key_demo.png?raw=true "keymap_demo")</center>
+<center>![keymap_demo](assets/key_demo.png)</center>
 
 ### Not that neat features
 
@@ -41,5 +41,3 @@ Be free to use this **code** for any purpose.
 Just go [here](https://franeklubi.github.io/pocket-operator-simulator/).
 
 <sup>please don't sue me</sup>
-
-
