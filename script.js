@@ -27,6 +27,12 @@ let bpm;
 let a_slider;
 let b_slider;
 
+let backup_btn;
+let backup_btn_w;
+let backup_btn_h;
+let backup_btn_width;
+let backup_btn_height;
+
 let drumkit = [];
 let icongrid;
 let icondata;
@@ -129,7 +135,10 @@ function setup() {
         console.log('All file apis supported, nice');
 
         // creating drop zone
-        cnvs.drop(load_drumfile);
+        cnvs.drop((file) => {
+            load_drumfile(file);
+            load_json(file);
+        });
 
     } else {
         alert('You won\'t be able to load external drumkit sounds because your browser sucks');
@@ -162,6 +171,7 @@ function setup() {
             ch_icon_sep.push(ch_img);
         };
 
+        backup_btn.show();
         bpm_slider.show();
     });
 
@@ -173,6 +183,24 @@ function setup() {
     bpm_slider.position(width*0.1, width*0.2);
     bpm_slider.style('width', ''+width*0.80);
     bpm_slider.hide();
+
+    // setting up backup button coords
+    backup_btn_width = floor(width*0.204);
+    backup_btn_height = floor(width*0.04);
+
+    backup_btn = createButton('BACKUP')
+        .style('width', `${backup_btn_width}px`)
+        .style('height', `${backup_btn_height}px`)
+        .style('border-style', 'none')
+        .style('font-size', `${width*0.03}`)
+        .style('color', 'white')
+        .style('background', '#2F124E');
+
+    backup_btn_w = width*0.41;
+    backup_btn_h = width*0.26;
+    backup_btn.position(backup_btn_w, backup_btn_h);
+    backup_btn.mousePressed(download);
+    backup_btn.hide();
 
     // slider for the a_knob
     a_slider = createSlider(0, 1, 0, 0.1);
@@ -387,6 +415,22 @@ function draw_drums_loading() {
     };
 };
 
+function load_json(file) {
+
+    if ( file.subtype == 'json' ) {
+        let data = loadJSON(file.data, () => {
+            // parsing data to po
+            po.retrieve(data);
+
+            // synchronizing bpm slider to po's held value
+            bpm_slider.value(po.get_bpm());
+        });
+
+    } else {
+        console.log('Not a json file.');
+    };
+};
+
 function load_drumfile(file) {
 
     if ( file.type === 'audio' ) {
@@ -474,4 +518,28 @@ function draw_disclaimer() {
     // drawing the button text
     text('I UNDERSTAND',
         width*0.05, height*0.7, width*0.9, height*0.1);
+};
+
+function download() {
+
+    // fetching backup from po instance
+    let backup = po.backup();
+
+    let date_str = Date.now();
+
+    let getter = document.createElement('a');
+
+    getter.setAttribute('href',
+        'data:text/plain;charset=utf-8,' +
+        encodeURIComponent(JSON.stringify(backup)));
+
+    getter.setAttribute('download',
+        `po_backup_${date_str}.json`);
+
+    getter.style.display = 'none';
+    document.body.appendChild(getter);
+
+    getter.click();
+
+    document.body.removeChild(getter);
 };

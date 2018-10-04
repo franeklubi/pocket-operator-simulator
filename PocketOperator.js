@@ -96,6 +96,10 @@ function PocketOperator(drumkit, chordkit, icons) {
         };
     };
 
+    this.get_bpm = () => {
+        return 60000/this.bpm_ms;
+    };
+
     // functions we route button info to, when special mode
     // (like writing or chord picking) is active
     this.sound_route = (num) => {
@@ -174,11 +178,11 @@ function PocketOperator(drumkit, chordkit, icons) {
         a_slider.input( () => {
             let value = a_slider.value();
 
-            // if we're in chord picking special mode,
-            // we set this phantom var to knob_A's value
+            // if we're in chord-picking special mode,
+            // we set this phantom var to knob_A's value,
             // we do this so chord's volume doesn't change
-            // when we mod drumkit's sounds
-            // we do the same for knob_B
+            // when we mod drumkit's sounds,
+            // the same thing happens to knob B
             if ( this.chord_picking && this.chord_pattern.length > 0 ) {
                 this.a_slider_phantom = value;
                 this.chord_volume = value;
@@ -456,6 +460,43 @@ function PocketOperator(drumkit, chordkit, icons) {
             this.chord_volume = (1 - this.suppress*b_value)*a_value;
             this.curr_chord.volume(this.chord_volume);
         };
+    };
+
+    this.backup = () => {
+
+        let drum_patterns = [];
+        let mod_array = [];
+
+        // looping through all the sounds
+        for ( let x = 0; x < 16; x++ ) {
+            drum_patterns.push(drumkit[x].ret_whole_pattern());
+            mod_array.push(drumkit[x].get_whole_mod());
+        };
+
+        // creating objects with data
+        let object = {
+            "chord_pattern": this.chord_pattern,
+            "bpm_ms": this.bpm_ms,
+            "pattern_chain": this.pattern_chain,
+            "drum_patterns": drum_patterns,
+            "mod_array": mod_array
+        };
+
+        return object;
+    };
+
+    this.retrieve = (data) => {
+        console.log(data);
+        this.bpm_ms = data.bpm_ms;
+        this.chord_pattern = data.chord_pattern;
+        this.pattern_chain = data.pattern_chain;
+
+        for ( let x = 0; x < 16; x++ ) {
+            drumkit[x].set_whole_mod(data.mod_array[x]);
+            drumkit[x].set_pattern(data.drum_patterns[x]);
+        };
+
+        console.log('retrieved :)');
     };
 
     // main drawing function

@@ -23,6 +23,14 @@ function Sound(path_to_sound, callback, err_callback) {
     };
     this.populate_mod(this.chosen_pattern);
 
+    this.get_whole_mod = () => {
+        return this.mod_pattern;
+    };
+
+    this.set_whole_mod = (mod_pattern) => {
+        this.mod_pattern = mod_pattern;
+    };
+
     this.reload_sound = (loadSound_obj) => {
         this.sound = loadSound_obj;
     };
@@ -90,5 +98,13 @@ function Sound(path_to_sound, callback, err_callback) {
 
     this.ret_pattern = () => {
         return this.pattern[this.chosen_pattern]
+    };
+
+    this.ret_whole_pattern = () => {
+        return this.pattern;
+    };
+
+    this.set_pattern = (pattern) => {
+        this.pattern = pattern;
     };
 };
