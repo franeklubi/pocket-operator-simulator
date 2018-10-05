@@ -525,21 +525,9 @@ function download() {
     // fetching backup from po instance
     let backup = po.backup();
 
+    //getting current date in seconds
     let date_str = Date.now();
 
-    let getter = document.createElement('a');
-
-    getter.setAttribute('href',
-        'data:text/plain;charset=utf-8,' +
-        encodeURIComponent(JSON.stringify(backup)));
-
-    getter.setAttribute('download',
-        `po_backup_${date_str}.json`);
-
-    getter.style.display = 'none';
-    document.body.appendChild(getter);
-
-    getter.click();
-
-    document.body.removeChild(getter);
+    // downloading to client
+    save(backup, `po_backup_${date_str}.json`);
 };
