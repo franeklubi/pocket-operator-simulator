@@ -28,10 +28,11 @@ let a_slider;
 let b_slider;
 
 let backup_btn;
-let backup_btn_w;
-let backup_btn_h;
+let backup_btn_x;
+let backup_btn_y;
 let backup_btn_width;
 let backup_btn_height;
+let backup_btn_timer;
 
 let drumkit = [];
 let icongrid;
@@ -175,46 +176,53 @@ function setup() {
         bpm_slider.show();
     });
 
+    // setting global button_size
     button_size = width*0.0830;
 
     // creating and setting up a sliders
-    bpm_slider = createSlider(BPM_RANGE[0], BPM_RANGE[1], 120);
-    bpm_slider.parent('bpm_slider');
-    bpm_slider.position(width*0.1, width*0.2);
-    bpm_slider.style('width', ''+width*0.80);
-    bpm_slider.hide();
+    bpm_slider = createSlider(BPM_RANGE[0], BPM_RANGE[1], 120)
+        .parent('bpm_slider')
+        .position(width*0.1, width*0.2)
+        .style('width', ''+width*0.80)
+        .hide();
 
     // setting up backup button coords
-    backup_btn_width = floor(width*0.204);
-    backup_btn_height = floor(width*0.04);
+    backup_btn_x = width*0.408;
+    backup_btn_y = width*0.259;
+    backup_btn_width = floor(width*0.208);
+    backup_btn_height = floor(width*0.045);
 
+    // setting up backup button
     backup_btn = createButton('BACKUP')
         .style('width', `${backup_btn_width}px`)
         .style('height', `${backup_btn_height}px`)
         .style('border-style', 'none')
         .style('font-size', `${width*0.03}`)
         .style('color', 'white')
-        .style('background', '#2F124E');
+        .style('background', '#2F124E')
+        .position(backup_btn_x, backup_btn_y)
+        .hide();
 
-    backup_btn_w = width*0.41;
-    backup_btn_h = width*0.26;
-    backup_btn.position(backup_btn_w, backup_btn_h);
-    backup_btn.mousePressed(download);
-    backup_btn.hide();
+    backup_btn.mousePressed(() => {
+        backup_btn_handler('down');
+    });
+    backup_btn.mouseReleased(() => {
+        backup_btn_handler('up');
+    });
 
     // slider for the a_knob
-    a_slider = createSlider(0, 1, 0, 0.1);
-    a_slider.parent('a_slider');
-    a_slider.position(width*0.10, width*0.62);
-    a_slider.style('width', ''+width*0.40);
-    a_slider.hide();
+    a_slider = createSlider(0, 1, 0, 0.1)
+        .parent('a_slider')
+        .position(width*0.10, width*0.62)
+        .style('width', ''+width*0.40)
+        .hide();
 
     // and lastly for the the b_knob
-    b_slider = createSlider(0, 1, 0, 0.1);
-    b_slider.parent('b_slider');
-    b_slider.position(width*0.50, width*0.62);
-    b_slider.style('width', ''+width*0.40);
-    b_slider.hide();
+    b_slider = createSlider(0, 1, 0, 0.1)
+        .parent('b_slider')
+        .position(width*0.50, width*0.62)
+        .style('width', ''+width*0.40)
+        .hide();
 
     // setting up padding for button drawing
     padding_x = width*0.138;
@@ -416,6 +424,7 @@ function draw_drums_loading() {
 };
 
 function load_json(file) {
+    console.log(file);
 
     if ( file.subtype == 'json' ) {
         let data = loadJSON(file.data, () => {
@@ -530,4 +539,44 @@ function download() {
 
     // downloading to client
     save(backup, `po_backup_${date_str}.json`);
+};
+
+function backup_btn_handler(state) {
+
+    if ( state == 'down' ) {
+        console.log("down");
+        backup_btn_timer = new Tock({
+            countdown: true,
+            complete: load_from_file
+        });
+        backup_btn_timer.start(200);
+    };
+
+    if ( state == 'up' && backup_btn_timer.lap() > 10 ) {
+        console.log("up");
+        backup_btn_timer.stop();
+        download();
+    };
+};
+
+function load_from_file() {
+
+    let loader = createFileInput(file => load_json(file))
+        .id('loader')
+        .hide();
+
+    let select_file_btn = createButton("select file")
+        .style('width', `${backup_btn_width}`)
+        .style('height', `${backup_btn_height}px`)
+        .style('border-style', 'none')
+        .style('font-size', `${width*0.03}`)
+        .position(backup_btn_x, backup_btn_y)
+        .id('select');
+
+    document.getElementById('select').onclick = () => {
+        document.getElementById('loader').click();
+
+        loader.remove();
+        select_file_btn.remove();
+    };
 };
