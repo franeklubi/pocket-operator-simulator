@@ -366,7 +366,7 @@ function keyPressed() {
     key_info = key_resolver(key);
 
     if ( key_info[2] == 'none' && key_info != "Enter" ) {
-        console.log('None')
+        // console.log('None')
 
         return;
     }
@@ -385,15 +385,18 @@ function slider_control(which, way, amt) {
 
     switch ( which ) {
 
-        case 'bpm': bpm_slider.value(
-            bpm_slider.value()+amt*way
-        ); break;
-        case 'a': a_slider.value(
-            a_slider.value()+amt*way
-        ); break;
-        case 'b': b_slider.value(
-            b_slider.value()+amt*way
-        ); break;
+        case 'bpm':
+            bpm_slider.elt.focus();
+            bpm_slider.value(bpm_slider.value()+amt*way);
+            break;
+        case 'a':
+            a_slider.elt.focus();
+            a_slider.value(a_slider.value()+amt*way);
+            break;
+        case 'b':
+            b_slider.elt.focus();
+            b_slider.value(b_slider.value()+amt*way);
+            break;
     };
 };
 
