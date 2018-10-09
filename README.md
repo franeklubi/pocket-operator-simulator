@@ -19,6 +19,8 @@ Be free to use this **code** for any purpose.
 
 # Neat features #
 
+* **you can download current setup with a 'BACKUP' button**
+* **you can drop (or hold the 'BACKUP' button to select) your backup file on the PO to load saved setup**
 * **you can drop your samples on any of the sequencer buttons**
 * currently playing chord can be seen on the screen
 * works on phone too, a bit slowly though
