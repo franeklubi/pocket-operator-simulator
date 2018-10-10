@@ -196,6 +196,7 @@ function PocketOperator(drumkit, chordkit, icons) {
         this.a_knob_pressed = !this.a_knob_pressed;
         if ( this.a_knob_pressed ) {
             a_slider.show();
+            a_slider.elt.focus();
         } else {
             a_slider.hide();
         };
@@ -219,6 +220,7 @@ function PocketOperator(drumkit, chordkit, icons) {
         this.b_knob_pressed = !this.b_knob_pressed;
         if ( this.b_knob_pressed ) {
             b_slider.show();
+            b_slider.elt.focus();
         } else {
             b_slider.hide();
         };
